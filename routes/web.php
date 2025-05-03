@@ -7,8 +7,8 @@ use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect('/dashboard');
+})->middleware('auth');
 
 Route::get('/testing', function () {
     return view('welcome');
