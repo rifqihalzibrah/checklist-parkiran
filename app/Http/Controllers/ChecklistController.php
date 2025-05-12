@@ -13,7 +13,7 @@ class ChecklistController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->hasAnyRole(['chief', 'supervisor'])) {
+        if (Auth::user()->hasAnyRole(['superadmin', 'chief', 'supervisor'])) {
             // Chief or Supervisor: see checklists not in draft
             $checklists = Checklist::where('status', '!=', 'draft')
                 ->latest()
@@ -37,8 +37,7 @@ class ChecklistController extends Controller
             ];
         } else {
             // Regular user: see only own draft checklists
-            $checklists = Checklist::where('created_by', Auth::id())
-                ->where('status', 'draft')
+            $checklists = Checklist::where('status', 'draft')
                 ->latest()
                 ->get();
 
@@ -60,7 +59,7 @@ class ChecklistController extends Controller
 
         $routes = [
             'create' => route('checklist.create'),
-            'sumbit' => route('checklist.submit.all'),
+            'submit' => route('checklist.submit.all'),
             'edit_base' => url('checklist'),
             'delete_base' => url('checklist'),
             'approval_base' => url('checklist'),
@@ -156,7 +155,7 @@ class ChecklistController extends Controller
     {
         if (
             $checklist->created_by !== Auth::id() &&
-            !Auth::user()->hasAnyRole(['chief', 'supervisor'])
+            !Auth::user()->hasAnyRole(['superadmin', 'chief', 'supervisor'])
         ) {
             abort(403);
         }
@@ -168,7 +167,7 @@ class ChecklistController extends Controller
 
     public function submitAll(Request $request)
     {
-        if (!Auth::user()->hasAnyRole(['admin'])) {
+        if (!Auth::user()->hasAnyRole(['superadmin', 'admin'])) {
             abort(403);
         }
 
@@ -182,7 +181,7 @@ class ChecklistController extends Controller
     public function approveAll(Request $request)
     {
         // Ensure only chief or supervisor can perform this
-        if (!Auth::user()->hasAnyRole(['chief', 'supervisor'])) {
+        if (!Auth::user()->hasAnyRole(['superadmin', 'chief', 'supervisor'])) {
             abort(403);
         }
 
@@ -199,7 +198,7 @@ class ChecklistController extends Controller
     {
         if (
             $checklist->created_by !== Auth::id() &&
-            !Auth::user()->hasAnyRole(['chief', 'supervisor'])
+            !Auth::user()->hasAnyRole(['superadmin', 'chief', 'supervisor'])
         ) {
             abort(403);
         }

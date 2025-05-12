@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +14,56 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create Roles
+        $roles = [
+            'superadmin',
+            'chief',
+            'supervisor',
+            'admin',
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($roles as $roleName) {
+            Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
+        }
+
+        // Create Users and assign roles
+        $users = [
+            [
+                'name' => 'super_admin',
+                'email' => 'superadmin@xyz.com',
+                'password' => Hash::make('admin123'),
+                'role' => 'superadmin',
+            ],
+            [
+                'name' => 'chief_1',
+                'email' => 'chief1@xyz.com',
+                'password' => Hash::make('password'),
+                'role' => 'chief',
+            ],
+            [
+                'name' => 'supervisor_1',
+                'email' => 'supervisor1@xyz.com',
+                'password' => Hash::make('password'),
+                'role' => 'supervisor',
+            ],
+            [
+                'name' => 'admin_1',
+                'email' => 'admin1@xyz.com',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            $user = User::firstOrCreate(
+                ['email' => $userData['email']],
+                [
+                    'name' => $userData['name'],
+                    'password' => $userData['password'],
+                ]
+            );
+
+            $user->assignRole($userData['role']);
+        }
     }
 }

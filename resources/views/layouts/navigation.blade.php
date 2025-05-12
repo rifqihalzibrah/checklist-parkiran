@@ -20,11 +20,11 @@
                         {{ __('Data') }}
                     </x-nav-link>
 
-                    {{-- @if (Auth::user()->hasAnyRole(['chief', 'supervisor']))
-                        <x-nav-link :href="route('approval.index')" :active="request()->routeIs('approval.*')">
-                            {{ __('Approval') }}
+                    @if (Auth::user()->hasAnyRole(['superadmin']))
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('User') }}
                         </x-nav-link>
-                    @endif --}}
+                    @endif
 
                     <x-nav-link :href="route('report.index')" :active="request()->routeIs('report.*')">
                         {{ __('Reports') }}

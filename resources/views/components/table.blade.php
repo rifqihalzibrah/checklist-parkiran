@@ -32,7 +32,7 @@
         <div class="flex flex-wrap justify-end items-center gap-2">
 
             <!-- Submit (Admin Only, if row selected) -->
-            @if (Auth::user()->hasAnyRole(['admin']))
+            @if (Auth::user()->hasAnyRole(['superadmin', 'admin']))
                 <form action="{{ route('checklist.submit.all') }}" method="POST" class="inline-block"
                     @click.prevent="if(confirm('Submit all eligible checklists?')) $event.target.closest('form').submit();">
                     @csrf
@@ -49,7 +49,7 @@
             @endif
 
             <!-- Create (Admin Only) -->
-            @if (Auth::user()->hasAnyRole(['admin']))
+            @if (Auth::user()->hasAnyRole(['superadmin', 'admin']))
                 <a :href="'{{ $routes['create'] }}'"
                     class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded shadow-sm transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -61,7 +61,7 @@
             @endif
 
             <!-- Edit (Admin Only, if row selected) -->
-            @if (Auth::user()->hasAnyRole(['admin']))
+            @if (Auth::user()->hasAnyRole(['superadmin', 'admin']))
                 <template x-if="selectedRow">
                     <a :href="`{{ $routes['edit_base'] }}/${selectedRow.id}/edit`"
                         class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold px-4 py-2 rounded shadow-sm transition">
@@ -76,7 +76,7 @@
             @endif
 
             <!-- Delete (Admin Only, if row selected) -->
-            @if (Auth::user()->hasAnyRole(['admin']))
+            @if (Auth::user()->hasAnyRole(['superadmin', 'admin']))
                 <template x-if="selectedRow">
                     <form :action="`{{ $routes['delete_base'] }}/${selectedRow.id}`" method="POST" class="inline-block"
                         @click.prevent="if(confirm('Are you sure?')) $event.target.closest('form').submit();">
@@ -95,8 +95,8 @@
                 </template>
             @endif
 
-            <!-- Revition (Chief/Supervisor Only, if row selected) -->
-            @if (Auth::user()->hasAnyRole(['chief', 'supervisor']))
+            <!-- Revision (Chief/Supervisor Only, if row selected) -->
+            @if (Auth::user()->hasAnyRole(['superadmin', 'chief', 'supervisor']))
                 <template x-if="selectedRow">
                     <form :action="`{{ $routes['revision_base'] }}/${selectedRow.id}/revision`" method="POST"
                         class="inline-block"
@@ -117,7 +117,7 @@
             @endif
 
             <!-- Approve (Chief/Supervisor Only, if row selected) -->
-            @if (Auth::user()->hasAnyRole(['chief', 'supervisor']))
+            @if (Auth::user()->hasAnyRole(['superadmin', 'chief', 'supervisor']))
                 <form action="{{ route('checklist.approve.all') }}" method="POST" class="inline-block"
                     @click.prevent="if(confirm('Approve all checklists?')) $event.target.closest('form').submit();">
                     @csrf

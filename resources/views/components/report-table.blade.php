@@ -23,13 +23,12 @@
 }">
     <!-- Top Bar with Export Button -->
     <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
-        <x-text-input type="text" x-model="search" placeholder="Search..."
-            class="px-3 py-2 text-sm text-black w-full sm:w-1/3" />
+        {{-- <x-text-input type="text" x-model="search" placeholder="Search..."
+            class="px-3 py-2 text-sm text-black w-full sm:w-1/3" /> --}}
 
         <a href="{{ route('reports.export', request()->query()) }}"
             class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded shadow-sm transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
             Export Excel
